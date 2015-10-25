@@ -1,0 +1,18 @@
+logging:
+  version: 1
+  formatters:
+    json_fmt:
+      '()': 'pythonjsonlogger.jsonlogger.JsonFormatter'
+      format: '%(message)s%(levelname)s%(lineno)s%(asctime)s'
+      datefmt: '%Y-%m-%mT%H:%M:%S'
+  handlers:
+    console:
+      class: logging.StreamHandler
+      level: DEBUG
+      formatter: json_fmt
+      stream: ext://sys.stderr
+  loggers:
+    '': # root logger
+      handlers: [console]
+      level: DEBUG
+      propagate: False

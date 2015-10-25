@@ -1,0 +1,31 @@
+logging:
+  version: 1
+  formatters:
+    colored:
+      '()': 'colorlog.ColoredFormatter'
+      format: '%(log_color)s%(levelname)1.1s:%(module)s:%(lineno)-2s %(reset)s %(message)s'
+    fluent_fmt:
+      '()': fluent.handler.FluentRecordFormatter
+      format:
+        level: '%(levelname)s'
+        hostname: '%(hostname)s'
+        where: '%(module)s.%(funcName)s'
+  handlers:
+    console:
+      class: logging.StreamHandler
+      level: DEBUG
+      formatter: colored
+      stream: ext://sys.stdout
+    fluentd:
+      class: fluent.handler.FluentHandler
+      host: localhost
+      port: 24224
+      formatter: fluentd
+      level: INFO
+    null:
+      class: logging.NullHandler
+  loggers:
+    '': # root logger
+      handlers: [console, fluentd]
+      level: DEBUG
+      propagate: False

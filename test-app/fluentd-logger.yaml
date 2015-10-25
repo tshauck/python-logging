@@ -1,0 +1,22 @@
+logging:
+  version: 1
+  formatters:
+    fluentd:
+      '()': 'fluent.handler.FluentRecordFormatter'
+      format:
+        level: '%(levelname)s'
+        where: '%(module)s.%(lineno)s'
+        when: '%(asctime)s'
+  handlers:
+    fluentd:
+      class: fluent.handler.FluentHandler
+      host: fluentd
+      port: 24224
+      tag: app.app
+      level: DEBUG
+      formatter: fluentd
+  loggers:
+    '': # root logger
+      handlers: [fluentd]
+      level: DEBUG
+      propagate: False
